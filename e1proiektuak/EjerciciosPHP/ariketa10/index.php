@@ -88,6 +88,12 @@ $taldeak = new Kontsultak($db);
 
     <div>
         <?php
+        if (isset($_SESSION["taldea"])) {
+
+            setcookie('taldea_cookie', $_SESSION['taldea'], time() + 3600);
+        }
+
+
         echo "Zure talde gustokoena: " . $_SESSION["taldea"];
         ?>
     </div>
