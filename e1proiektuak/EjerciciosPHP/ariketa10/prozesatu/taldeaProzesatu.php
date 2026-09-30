@@ -1,14 +1,13 @@
 <?php
 require_once '../konexioa/Db.php';
 require_once '../konexioa/Txertaketak.php';
-require_once '../konexioa/Kontsultak.php';
 require_once '../klaseak/Taldea.php';
 
 
 // Erroreak erakusten dira. 
-ini_set('display_startup_errors', 1);
+/*ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
-error_reporting(-1);
+error_reporting(-1); */
 
 $db = new Db;
 $db->konektatu();

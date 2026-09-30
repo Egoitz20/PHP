@@ -6,12 +6,9 @@ class Taldea
     public String $izena = "";
     public ?int $puntuak = null;
 
-    public function __construct($i = "", $p = null)
+    public function __construct($izena = "", $puntuak = null)
     {
-        print_r($i);
-        print_r($p);
-        
-        $this->izena = $i;
-        $this->puntuak = $p;
+        $this->izena = $izena;
+        $this->puntuak = $puntuak;
     }
 }

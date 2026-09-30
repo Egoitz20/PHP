@@ -3,6 +3,8 @@ require_once "./konexioa/Db.php";
 require_once "./konexioa/Kontsultak.php";
 require_once "./klaseak/Taldea.php";
 
+session_start();
+
 $db = new Db;
 $db->konektatu();
 
@@ -28,28 +30,43 @@ $taldeak = new Kontsultak($db);
                     <th>ID</th>
                     <th>IZENA</th>
                     <th>PUNTUAK</th>
-                    <th>BOTOI ALDAKETA</th>
-                    <th>BOTOI EZABAKETA</th>
-                    <th>BOTOI GOGOKOENA</th>
+                    <th>PUNTU ALDAKETA</th>
+                    <th>EZABAKETA</th>
+                    <th>GOGOKOENA</th>
                 </tr>
-                <tr>
-                    <?php
-                    foreach ($taldeak->sailkapenaBistaratu() as $erakTalde) {
-                        echo "<td>" . $erakTalde->id . "</td>";
-                        echo "<td><a href='./pages/partaideak.php'>" . $erakTalde->izena . "</a></td>";
-                        echo "<td>" . $erakTalde->puntuak . "</td>";
-                    ?>
+
+                <?php
+                foreach ($taldeak->sailkapenaBistaratu() as $erakTalde) {
+                    echo "<tr>";
+                    echo "<td>" . $erakTalde->id . "</td>";
+                    echo "<td><a href='./pages/partaideak.php?taldea=$erakTalde->izena&taldeId=$erakTalde->id'>" . $erakTalde->izena . "</a></td>";
+                    echo "<td>" . $erakTalde->puntuak . "</td>";
+                ?>
+                    <td>
                         <form action="./prozesatu/botoiKonfiguraketa.php" method="post">
-                            <?php
-                            echo "<th> <input type='submit' name='akzioa' value='Aldatu'> </th>";
-                            echo "<th> <input type='submit' name='akzioa' value='Ezabatu'> </th>";
-                            echo "<th> <input type='submit' name='akzioa' value='Gogokoena'> </th>";
-                            ?>
+                            <input type="hidden" name="id" value="<?php echo $erakTalde->id; ?>">
+                            <input type="submit" name="akzioa" value="Aldatu">
                         </form>
-                    <?php
-                    }
-                    ?>
-                </tr>
+                    </td>
+
+                    <td>
+                        <form action="./prozesatu/botoiKonfiguraketa.php" method="post">
+                            <input type="hidden" name="id" value="<?php echo $erakTalde->id; ?>">
+                            <input type="submit" name="akzioa" value="Ezabatu">
+                        </form>
+                    </td>
+
+                    <td>
+                        <form action="./prozesatu/botoiKonfiguraketa.php" method="post">
+                            <input type="hidden" name="izena" value="<?php echo $erakTalde->izena; ?>">
+                            <input type="submit" name="akzioa" value="Gogokoena">
+                        </form>
+                    </td>
+                <?php
+                    echo "</tr>";
+                }
+                ?>
+
             </table>
         </div>
     </div>
@@ -67,6 +84,12 @@ $taldeak = new Kontsultak($db);
                 <input type="submit" value="Bidali">
             </form>
         </div>
+    </div>
+
+    <div>
+        <?php
+        echo "Zure talde gustokoena: " . $_SESSION["taldea"];
+        ?>
     </div>
 </body>
 
