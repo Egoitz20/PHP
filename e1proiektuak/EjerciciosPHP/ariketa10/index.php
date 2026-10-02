@@ -93,8 +93,11 @@ $taldeak = new Kontsultak($db);
             setcookie('taldea_cookie', $_SESSION['taldea'], time() + 3600);
         }
 
-
-        echo "Zure talde gustokoena: " . $_SESSION["taldea"];
+        if (isset($_SESSION["taldea"])) {
+            echo "Zure talde gustokoena: " . $_SESSION["taldea"];
+        } else {
+            echo "Ez daukazu horaindik talde gustokoena. ";
+        }
         ?>
     </div>
 </body>
