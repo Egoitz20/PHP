@@ -3,12 +3,6 @@ require_once '../konexioa/Db.php';
 require_once '../konexioa/Txertaketak.php';
 require_once '../klaseak/Taldea.php';
 
-
-// Erroreak erakusten dira. 
-/*ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1); */
-
 $db = new Db;
 $db->konektatu();
 
@@ -29,10 +23,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errorePuntuak = "Puntuak ipini behar dira!";
     }
 
+    //Erroreak badagoen idatsita, errore mezua bidaliko da formulariorantz
     if (!empty($erroreIzena) && !empty($errorePuntuak)) {
         header("Location: ../index.php?erroreIzena=$erroreIzena&errorePuntuak=$errorePuntuak");
         exit();
     } else {
+
+        // Formulariotik informazioa jasota, taldea txertatuko da taulan
+        // Funtzio ruta: "../konexioa/Txertaketak.php"
         $taldeTxertaketa->txertatuTaldea(new Taldea($izena, $puntuak));
 
         header("Location: ../index.php");

@@ -1,9 +1,5 @@
 <?php
 
-/* ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1); */
-
 class Txertaketak
 {
     private Db $db;
@@ -15,6 +11,7 @@ class Txertaketak
 
     public function txertatuTaldea(Taldea $t)
     {
+        // ":izena" eta ":puntuak" "index.php" formulariotik jasotzean, taldea sortuko da.
         $sql = "INSERT INTO taldea (izena, puntuak) 
         VALUES (:izena, :puntuak)";
 
@@ -30,6 +27,7 @@ class Txertaketak
     public function txertatuPartaideak(Partaidea $p)
     {
 
+        // ":izena", ":herrialdea" eta "taldea_id" "partaideak.php" formulariotik jasotzean, partaidea sortuka da taldearen barruan. 
         $sql = "INSERT INTO partaideak (izena, herrialdea, taldea_id) 
         VALUES (:izena, :herrialdea, :taldea_id)";
 

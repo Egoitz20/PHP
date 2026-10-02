@@ -19,16 +19,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $botoiAukeratuta = $_POST["akzioa"];
 
+        // "Aldatu" botoia konfigurazioa
         if ($botoiAukeratuta === "Aldatu") {
             $idAukeratuta = $_POST["id"];
+            // Erabiltzaileare formulario berri bat erakutsiko dio taldeko puntuak aldatzeko.
+            // Funtzioaren kokapena: 57 linea
             puntuazioBerriaJaso($idAukeratuta);
+
+            // "Ezabatu" botoia konfigurazioa
         } else if ($botoiAukeratuta === "Ezabatu") {
             $idAukeratuta = $_POST["id"];
+            // Aukeratutako taldea id jasotzen du eta taldea eta barruko partaideak ezabatzen dira. 
+            // Funtzioaren ruta: "../konexioa/Ezabaketak.php"
             $taldeaEzabatu->ezabatuTaldea($idAukeratuta);
             header("Location: ../index.php");
             exit();
+            // "Gogokoena" botoia konfigurazioa
         } else if ($botoiAukeratuta === "Gogokoena") {
             $jasotakoIzena = $_POST["izena"];
+            // Erabakitutako taldearen izena $_SESSION gordeko da. 
             $_SESSION["taldea"] = $jasotakoIzena;
             header("Location: ../index.php");
             exit();
@@ -42,6 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $idAukeratuta2 = $_POST["id2"];
 
         if ($idAukeratuta2 !== null && $puntuazioaBerria !== "") {
+            // Erabakitutako taldearen puntuazioa eguneratzen da erabiltzailearen ipinitutako puntuazio berriarekin
+            // Funtzioaren ruta: "../konexioa/Eguneraketak.php"
             $puntuakAldatu->puntuazioaAldatu($idAukeratuta2, $puntuazioaBerria);
             header("Location: ../index.php");
             exit();
@@ -53,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Puntuazio aldaketaren formularioa erakusten dio erabiltzaileari
 function puntuazioBerriaJaso($jasotakoId)
 {
 ?>

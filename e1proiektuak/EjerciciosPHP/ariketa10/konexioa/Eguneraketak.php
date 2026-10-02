@@ -11,6 +11,7 @@ class Eguneraketak
 
     public function puntuazioaAldatu($id, $puntuazioBerria)
     {
+        // "Aldatu" botoia sakatzerakoan, erabiltzailea aldatu ahal du puntuazioa erabakitutako taldeari.
         $sql = "UPDATE taldea SET puntuak = :puntuazioBerria WHERE id = :id";
 
         $stmt = $this->db->getKonexioa()->prepare($sql);

@@ -25,9 +25,13 @@ $taldeId = $_GET['taldeId'];
 <body>
     <h1><?php echo $taldeIzena; ?> - Partaideak</h1>
 
-    <?php if (!empty($_GET['error'])) {
+    <?php
+     // Errorea itzultzen bada, errore mesua erakutsiko da.
+    if (!empty($_GET['error'])) {
         echo $_GET['error'];
-    } ?>
+    }
+    
+    ?>
 
     <table border="1px">
         <tr>
@@ -36,6 +40,7 @@ $taldeId = $_GET['taldeId'];
             <th>Herrialdea</th>
         </tr>
         <?php
+        // Dinamikoki erakusten dira partehartzaileak taularen barruan.
         foreach ($taldeak->partehartzaileakBistaratu($taldeIzena) as $partekideak) {
             echo "<tr>";
             echo "<td>$partekideak->id</td>";
@@ -43,7 +48,6 @@ $taldeId = $_GET['taldeId'];
             echo "<td>$partekideak->herrialdea</td>";
             echo "</tr>";
         }
-
         ?>
     </table>
 

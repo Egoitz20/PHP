@@ -3,6 +3,7 @@ require_once "./konexioa/Db.php";
 require_once "./konexioa/Kontsultak.php";
 require_once "./klaseak/Taldea.php";
 
+// SESSION gordetzen den informazioa gordetzen da.
 session_start();
 
 $db = new Db;
@@ -10,6 +11,7 @@ $db->konektatu();
 
 $taldeak = new Kontsultak($db);
 
+// Taldea izena ez badago hutsik, gordetuko da nabigatzailean cookie batean 3600 segundu.
 if (isset($_SESSION["taldea"])) {
     setcookie('taldea_cookie', $_SESSION['taldea'], time() + 3600);
 }
@@ -40,9 +42,12 @@ if (isset($_SESSION["taldea"])) {
                 </tr>
 
                 <?php
+
+                //Dinamikoki sortutako taldeak erakusten dira. 
                 foreach ($taldeak->sailkapenaBistaratu() as $erakTalde) {
                     echo "<tr>";
                     echo "<td>" . $erakTalde->id . "</td>";
+                    // Talde izenaren esteka emanez gero, "partaideak.php" joango da, eta erabakitutako taldearen izena eta id-a jasoko du "partaideak.php"
                     echo "<td><a href='./pages/partaideak.php?taldea=$erakTalde->izena&taldeId=$erakTalde->id'>" . $erakTalde->izena . "</a></td>";
                     echo "<td>" . $erakTalde->puntuak . "</td>";
                 ?>
@@ -102,6 +107,7 @@ if (isset($_SESSION["taldea"])) {
 
     <div>
         <?php
+        // "Gogokoena" botoairi emanez gero, taldearen izena hartzen da eta aukeratuko taldea mesua erakusten da. 
         if (isset($_SESSION["taldea"])) {
             echo "Zure talde gustokoena: " . $_SESSION["taldea"];
         } else {

@@ -21,6 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tId = $_POST['taldeaId'];
 
         if (!empty($partaideIzena) && !empty($herrialdea) && !empty($tId)) {
+            // Formulariotik informazioa jasota, taldearen partaidea txertatuko da taulan
+            // Funtzio ruta: "../konexioa/Txertaketak.php"
             $partaideakTxertatu->txertatuPartaideak(new Partaidea($partaideIzena, $herrialdea, $tId));
             header("Location: ../pages/partaideak.php?taldea=$tIzena&taldeId=$tId");
             exit();
