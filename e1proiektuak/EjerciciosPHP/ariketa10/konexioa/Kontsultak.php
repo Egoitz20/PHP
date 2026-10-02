@@ -38,7 +38,7 @@ class Kontsultak
             ]
         );
 
-        $emaitza = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Partaideak::class);
+        $emaitza = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Partaidea::class);
 
         return $emaitza;
     }

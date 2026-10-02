@@ -20,18 +20,19 @@ $errorePuntuak = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $izena = htmlspecialchars($_POST["izena"]);
-    $puntuak = htmlspecialchars($_POST["puntuak"]);
+    $puntuak = (int) $_POST["puntuak"];
 
-    if (!isset($izena)) {
+    if (empty($izena)) {
         $erroreIzena = "Izen bat egon behar da!";
-        header("Location: ../index.php?erroreIzena=$erroreIzena");
-        exit();
-    } else if (!isset($puntuak) || $puntuak === 0) {
+    }
+    if (empty($puntuak)) {
         $errorePuntuak = "Puntuak ipini behar dira!";
-        header("Location: ../index.php?erroreIzena=$errorePuntuak");
+    }
+
+    if (!empty($erroreIzena) && !empty($errorePuntuak)) {
+        header("Location: ../index.php?erroreIzena=$erroreIzena&errorePuntuak=$errorePuntuak");
         exit();
     } else {
-
         $taldeTxertaketa->txertatuTaldea(new Taldea($izena, $puntuak));
 
         header("Location: ../index.php");

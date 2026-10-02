@@ -1,7 +1,7 @@
 <?php
 require_once "../konexioa/Db.php";
 require_once "../konexioa/Kontsultak.php";
-require_once "../klaseak/Partaideak.php";
+require_once "../klaseak/Partaidea.php";
 
 $db = new Db;
 $db->konektatu();
@@ -24,6 +24,10 @@ $taldeId = $_GET['taldeId'];
 
 <body>
     <h1><?php echo $taldeIzena; ?> - Partaideak</h1>
+
+    <?php if (!empty($_GET['error'])) {
+        echo $_GET['error'];
+    } ?>
 
     <table border="1px">
         <tr>

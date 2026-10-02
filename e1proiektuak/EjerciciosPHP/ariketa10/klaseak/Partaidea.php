@@ -1,6 +1,6 @@
 <?php
 
-class Partaideak
+class Partaidea
 {
 
     public ?int $id = null;

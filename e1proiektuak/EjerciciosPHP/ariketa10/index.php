@@ -9,6 +9,10 @@ $db = new Db;
 $db->konektatu();
 
 $taldeak = new Kontsultak($db);
+
+if (isset($_SESSION["taldea"])) {
+    setcookie('taldea_cookie', $_SESSION['taldea'], time() + 3600);
+}
 ?>
 
 
@@ -77,9 +81,19 @@ $taldeak = new Kontsultak($db);
             <form action="./prozesatu/taldeaProzesatu.php" method="post">
                 <label>Izena: </label>
                 <input type="text" name="izena">
+
+                <?php if (!empty($_GET['erroreIzena'])) {
+                    echo $_GET['erroreIzena'];
+                } ?>
+
                 <br /><br />
                 <label>Puntuak: </label>
                 <input type="number" name="puntuak">
+
+                <?php if (!empty($_GET['errorePuntuak'])) {
+                    echo $_GET['errorePuntuak'];
+                } ?>
+
                 <br /><br />
                 <input type="submit" value="Bidali">
             </form>
@@ -88,11 +102,6 @@ $taldeak = new Kontsultak($db);
 
     <div>
         <?php
-        if (isset($_SESSION["taldea"])) {
-
-            setcookie('taldea_cookie', $_SESSION['taldea'], time() + 3600);
-        }
-
         if (isset($_SESSION["taldea"])) {
             echo "Zure talde gustokoena: " . $_SESSION["taldea"];
         } else {

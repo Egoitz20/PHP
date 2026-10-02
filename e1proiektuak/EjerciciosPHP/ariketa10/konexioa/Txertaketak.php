@@ -27,7 +27,7 @@ class Txertaketak
         );
     }
 
-    public function txertatuPartaideak(Partaideak $p)
+    public function txertatuPartaideak(Partaidea $p)
     {
 
         $sql = "INSERT INTO partaideak (izena, herrialdea, taldea_id) 
