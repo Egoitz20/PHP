@@ -43,7 +43,32 @@ class Kontsultak
             ]
         );
 
+        //fetchAll() erabiltzen da, lerro bat baino gehiago itzultzen delako
         $emaitza = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Partaidea::class);
+
+        return $emaitza;
+    }
+
+    public function taldeakPartaideakBistaratu($id): ?array
+    {
+        // talde baten informazioa bistartzen du partaideekin
+        $sql = "SELECT 
+                    t.izena AS TALDE_IZENA, 
+                    t.puntuak AS TALDE_PUNTUAK, 
+                    p.izena AS PARTAIDE_IZENA, 
+                    p.herrialdea AS PARTAIDE_HERRIALDEA 
+                FROM taldea t 
+                INNER JOIN partaideak p ON t.id = p.taldea_id 
+                WHERE t.id = :id";
+
+        $stmt = $this->db->getKonexioa()->prepare($sql);
+        $stmt->execute(
+            [
+                'id' => $id
+            ]
+        );
+
+        $emaitza = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, PartaideTaldeak::class);
 
         return $emaitza;
     }
