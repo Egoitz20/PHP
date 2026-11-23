@@ -39,11 +39,31 @@ $grupos = new Consultas($db);
                 foreach ($grupos->mostrarClasificacion() as $mc) {
                     echo "<tr>";
                     echo "<td>" . $mc->id . "</td>";
-                    echo "<td>" . $mc->izena . "</td>";
+                    echo "<td><a href='./paginas/participantes.php?nombreGrupo=$mc->izena&idGrupo=$mc->id'>" . $mc->izena . "</td>";
                     echo "<td>" . $mc->puntuak . "</td>";
+                ?>
+
+                    <td>
+                        <form action="./proceso/configuracionBotones.php" method="post">
+                            <input type="hidden" name="id" value="<?php echo $mc->id; ?>">
+                            <input type="submit" name="accion" value="Cambiar">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="./proceso/configuracionBotones.php" method="post">
+                            <input type="hidden" name="id" value="<?php echo $mc->id; ?>">
+                            <input type="submit" name="accion" value="Borrar">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="./proceso/configuracionBotones.php" method="post">
+                            <input type="hidden" name="id" value="<?php echo $mc->izena; ?>">
+                            <input type="submit" name="accion" value="Favorito">
+                        </form>
+                    </td>
+                <?php
                     echo "</tr>";
                 }
-
                 ?>
             </tbody>
         </table>
