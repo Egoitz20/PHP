@@ -6,17 +6,17 @@ require_once "interface.php";
 // Klase definizioa.
 class Mendia implements Sailkagarria
 {
-    private DB $db;
+    private ?DB $db = null;
 
-    private ?int $id;
-    private string $izena;
-    private string $lurraldea;
-    private int $altuera;
-    private float $distantzia;
-    private ?int $desnibela;
+    public ?int $id = null;
+    public string $izena = "";
+    public string $lurraldea = "";
+    public int $altuera = 0;
+    public float $distantzia = 0.0;
+    public ?int $desnibela = null;
 
     public function __construct(
-        DB $db,
+        ?DB $db = null,
         ?int $id = null,
         string $izena = "",
         string $lurraldea = "",
@@ -33,29 +33,15 @@ class Mendia implements Sailkagarria
         $this->desnibela = $desnibela;
     }
 
-    public function getIzena(): string
+    /**
+     * Datu-baseko mendi guztiak Mendia objektuen array batean bueltatzen ditu.
+     */
+    public function selectAll(?DB $db = null): array
     {
-        return $this->izena;
-    }
-
-    public function getLurraldea(): string
-    {
-        return $this->lurraldea;
-    }
-
-    public function getAltuera(): int
-    {
-        return $this->altuera;
-    }
-
-    public function getDistantzia(): float
-    {
-        return $this->distantzia;
-    }
-
-    public function getDesnibela(): ?int
-    {
-        return $this->desnibela;
+        $dbKonexioa = $db ? $db->getKonexioa() : ($this->db ? $this->db->getKonexioa() : (new DB())->getKonexioa());
+        $sql = "SELECT * FROM mendiak";
+        $stmt = $dbKonexioa->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Mendia::class);
     }
 
     #[Override]
@@ -75,19 +61,17 @@ class Mendia implements Sailkagarria
     }
 }
 
+// ── Datu-baseko konexioa ──
 $db = new DB();
-$mendiak = [];
-foreach ($db->selectAll() as $erregistroa) {
-    $mendiak[] = new Mendia(
-        $db,
-        (int) $erregistroa['id'],
-        $erregistroa['izena'],
-        $erregistroa['lurraldea'],
-        (int) $erregistroa['altuera'],
-        (float) $erregistroa['distantzia'],
-        (int) $erregistroa['desnibela']
-    );
-}
+
+// "a4.php" orrian, taulan, mendiak bistaratuko dira.
+$sql = "SELECT * FROM mendiak";
+
+$stmt = $db->getKonexioa()->query($sql);
+
+// Bistaratzen denez lerro bat baino gehiago, "Mendia" klaseko "fetchAll()" egingo da.
+// Bistaratzen bada lerro bat bakarrik, "fetch()" erabili beharko da, eta "Mendia" objektua itzuliko da, ez array-a.
+$mendiak = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Mendia::class);
 ?>
 
 
@@ -111,12 +95,12 @@ foreach ($db->selectAll() as $erregistroa) {
         </tr>
         <?php foreach ($mendiak as $mendia): ?>
             <tr>
-                <td><?php echo htmlspecialchars($mendia->getIzena()); ?></td>
-                <td><?php echo htmlspecialchars($mendia->getLurraldea()); ?></td>
-                <td><?php echo $mendia->getAltuera(); ?></td>
-                <td><?php echo $mendia->getDistantzia(); ?></td>
-                <td><?php echo $mendia->getDesnibela(); ?></td>
-                <td><?php echo htmlspecialchars($mendia->zailtasunMaila()); ?></td>
+                <td><?= $mendia->izena; ?></td>
+                <td><?= $mendia->lurraldea; ?></td>
+                <td><?= $mendia->altuera; ?></td>
+                <td><?= $mendia->distantzia; ?></td>
+                <td><?= $mendia->desnibela; ?></td>
+                <td><?= $mendia->zailtasunMaila(); ?></td>
             </tr>
         <?php endforeach; ?>
     </table>

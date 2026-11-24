@@ -2,33 +2,24 @@
 
 require_once "db.php";
 
-$db = new DB;
-
-$lurraldea = "";
-$altueraMin = "";
-$errore = "";
-$emaitzak = $db->selectAll();
+$mendiAurkituta = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $lurraldea = trim($_POST["lurraldea"] ?? "");
-    $altueraMin = trim($_POST["altueraMin"] ?? "");
+    $lurraldea = trim($_POST["lurraldea"]);
+    $altueraMin = trim($_POST["altueraMin"]);
+    $errore = "";
 
-    if ($altueraMin !== "" && (!is_numeric($altueraMin) || (float) $altueraMin < 0 || (float) $altueraMin > 2500)) {
+
+    if ($altueraMin < 0 || $altueraMin > 2500) {
         $errore = "Altuera minimoa 0 eta 2500 arteko zenbaki bat izan behar da.";
-        $emaitzak = [];
     } else {
-        $emaitzak = array_filter($emaitzak, function (array $mendia) use ($lurraldea, $altueraMin): bool {
-            if ($lurraldea !== "" && $mendia["lurraldea"] !== $lurraldea) {
-                return false;
-            }
-            if ($altueraMin !== "" && (int) $mendia["altuera"] < (int) $altueraMin) {
-                return false;
-            }
-            return true;
-        });
+        $db = new DB;
+        $emaitzak = $db->selectAll();
 
-        if (empty($emaitzak)) {
-            $errore = "Ez dago baldintzak betetzen dituen mendirik";
+        foreach ($emaitzak as $m) {
+            if ($m['altuera'] >= $altueraMin && $m['lurraldea'] == $lurraldea) {
+                $mendiAurkituta[] = $m;
+            }
         }
     }
 }
@@ -48,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div style="border: 2px solid black; padding: 10px; margin-bottom: 15px;">
         <?php
         if (!empty($errore)) {
-            echo "<p>" . htmlspecialchars($errore) . "</p>";
+            echo $errore;
         } else {
             foreach ($emaitzak as $emaitza) {
                 echo "<p>";
@@ -65,16 +56,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <label>Lurraldea: </label>
 
         <select name="lurraldea">
-            <option value="" <?php if ($lurraldea === "") echo "selected"; ?>>Guztiak</option>
-            <option value="Araba" <?php if ($lurraldea === "Araba") echo "selected"; ?>>Araba</option>
-            <option value="Bizkaia" <?php if ($lurraldea === "Bizkaia") echo "selected"; ?>>Bizkaia</option>
-            <option value="Gipuzkoa" <?php if ($lurraldea === "Gipuzkoa") echo "selected"; ?>>Gipuzkoa</option>
-            <option value="Nafarroa" <?php if ($lurraldea === "Nafarroa") echo "selected"; ?>>Nafarroa</option>
+            <option value="">Guztiak</option>
+            <option value="Araba">Araba</option>
+            <option value="Bizkaia">Bizkaia</option>
+            <option value="Gipuzkoa">Gipuzkoa</option>
+            <option value="Nafarroa">Nafarroa</option>
         </select>
         <br>
         <label>Altuera minimoa (m): </label>
 
-        <input type="text" name="altueraMin" value="<?php echo htmlspecialchars($altueraMin); ?>">
+        <input type="text" name="altueraMin">
         <br>
         <input type="submit" value="Bilatu">
     </form>

@@ -6,6 +6,7 @@ require_once "db.php";
 $db = new DB;
 $db->konektatu();
 
+const LURRALDEAK = ['Araba', 'Bizkaia', 'Gipuzkoa'];
 $metodoa = $_SERVER['REQUEST_METHOD'];
 
 switch ($metodoa) {
@@ -13,14 +14,16 @@ switch ($metodoa) {
         $mendiakBistaratu = [];
 
         foreach ($db->selectAll() as $mendiak) {
-            $mendiakBistaratu[] = [
-                "id" => $mendiak['id'],
-                "izena" => $mendiak['izena'],
-                "lurraldea" => $mendiak['lurraldea'],
-                "altuera" => $mendiak['altuera'],
-                "distantzia" => $mendiak['distantzia'],
-                "desnibela" => $mendiak['desnibela']
-            ];
+            if (in_array($mendiak['lurraldea'], LURRALDEAK, true)) {
+                $mendiakBistaratu[] = [
+                    "id" => $mendiak['id'],
+                    "izena" => $mendiak['izena'],
+                    "lurraldea" => $mendiak['lurraldea'],
+                    "altuera" => $mendiak['altuera'],
+                    "distantzia" => $mendiak['distantzia'],
+                    "desnibela" => $mendiak['desnibela']
+                ];
+            }
         }
         http_response_code(200);
         echo json_encode($mendiakBistaratu, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
