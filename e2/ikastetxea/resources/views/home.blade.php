@@ -1,1 +1,1 @@
-Kixooo
+@extends('layouts.app')
